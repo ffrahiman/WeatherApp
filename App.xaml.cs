@@ -16,6 +16,9 @@ namespace WeatherApp
 
             var service = new WeatherService();
 
+            using var db = new AppDbContext();
+            await db.Database.EnsureCreatedAsync();
+
             // Service Test
             //var cities = await service.SearchCitiesAsync("Berlin");
             //foreach (var city in cities)
