@@ -1,12 +1,203 @@
 ﻿<Window x:Class="WeatherApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WeatherApp"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="WeatherApp" Height="650" Width="900" MinWidth="700" MinHeight="500"
+        WindowStartupLocation="CenterScreen">
+    
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- Left Sidebar: search + favorites -->
+        <Border Grid.Column="0"
+                Background="#F0F4F8"
+                Padding="12">
+            <StackPanel>
+                
+                <!-- Search Box -->
+                <TextBlock Text="City Search"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,6" />
+                <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                         Padding="8,6"
+                         FontSize="13" />
+                <Button Content="Search"
+                        Command="{Binding SearchCitiesCommand}" 
+                        Margin="0,6,0,0"
+                        Padding="0,7"
+                        FontSize="13" />
+                
+                <!-- Loading Indicator -->
+                <TextBlock Text="Loading..."
+                           FontSize="12"
+                           Foreground="Gray"
+                           Margin="0,6,0,0"
+                           Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
+                
+                <!-- Status Message -->
+                <TextBlock Text="{Binding StatusMessage}"
+                           FontSize="12"
+                           Foreground="OrangeRed"
+                           TextWrapping="Wrap"
+                           Margin="0,4,0,0" />
+                
+                <!-- Search Results -->
+                <TextBlock Text="Results"
+                           FontWeight="SemiBold"
+                           FontSize="12"
+                           Margin="0,12,0,4" />
+                
+                <ListBox ItemsSource="{Binding SearchResults}"
+                         MaxHeight="160"
+                         FontSize="12">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}"
+                                       Padding="4,3"
+                                       Cursor="Hand" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="MouseLeftButtonUp"
+                                         Handler="SearchResult_Click" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+                
+                <!-- Favorites -->
+                <TextBlock Text="Favorites" 
+                           FontWeight="SemiBold"
+                           FontSize="12"
+                           Margin="0,16,0,4" />
+                <ListBox ItemsSource="{Binding Favorites}"
+                         FontSize="12">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Name}"
+                                           VerticalAlignment="Center"
+                                           Cursor="Hand" />
+                                <Button Grid.Column="1" 
+                                        Content="✕"
+                                        FontSize="10"
+                                        Padding="4,2"
+                                        Click="RemoveFavorite_Click"
+                                        Tag="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="MouseLeftButtonUp"
+                                         Handler="Favorite_Click" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+        </Border>
+        
+        <!-- Right Panel: Current Weather + Forecast -->
+        <Grid Grid.Column="1" Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <!-- Current Weather -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,24">
+                <TextBlock Text="{Binding SelectedCity.DisplayName}" 
+                           FontSize="22"
+                           FontWeight="Bold" />
 
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <TextBlock Text="{Binding CurrentWeather.WeatherIcon}"
+                               FontSize="48"
+                               Margin="0,0,16,0" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock FontSize="36"
+                                   FontWeight="Light">
+                            <Run Text="{Binding CurrentWeather.Temperature}" />
+                            <Run Text="°C" />
+                        </TextBlock>
+                        <TextBlock Text="{Binding CurrentWeather.Description}"
+                                   FontSize="14"
+                                   Foreground="Gray" />
+                        <TextBlock FontSize="12"
+                                   Foreground="Gray">
+                            <Run Text="Wind: "/>
+                            <Run Text="{Binding CurrentWeather.WindSpeed}"/>
+                            <Run Text="km/h"/>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                
+                <!-- Add to favorites button -->
+                <Button Content=" + Add to Favorites"
+                        Command="{Binding AddFavoriteCommand}"
+                        HorizontalAlignment="Left"
+                        Margin="0,12,0,0"
+                        Padding="12,6"
+                        FontSize="12" />
+            </StackPanel>
+            
+            <!-- 7-Day Forecast -->
+            <TextBlock Grid.Row="1"
+                       Text="7-Day Forecast"
+                       FontSize="15"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,10" />
+
+            <ItemsControl Grid.Row="2"
+                          ItemsSource="{Binding Forecast}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#F0F4F8"
+                                CornerRadius="8"
+                                Margin="4"
+                                Padding="8">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding DayName}"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding ShortDate}"
+                                           FontSize="10"
+                                           Foreground="Gray"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding WeatherIcon}"
+                                           FontSize="24"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,6" />
+                                <TextBlock FontSize="12"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center">
+                                    <Run Text="{Binding TempMax}" /><Run Text="°C" />
+                                </TextBlock>
+                                <TextBlock FontSize="11"
+                                           Foreground="Gray"
+                                           HorizontalAlignment="Center">
+                                    <Run Text="{Binding TempMin}" /><Run Text="°C" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
     </Grid>
 </Window>
