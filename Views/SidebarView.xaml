@@ -73,15 +73,22 @@
                          ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding DisplayName}"
-                                       Padding="4,3"
-                                       Cursor="Hand" />
+                            <Button Command="{Binding DataContext.SelectCityCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                    CommandParameter="{Binding}"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="4,3"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Cursor="Hand">
+                                <TextBlock Text="{Binding DisplayName}" />
+                            </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
-                            <EventSetter Event="MouseLeftButtonUp"
-                                         Handler="SearchResult_Click" />
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Stretch" />
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
@@ -100,7 +107,7 @@
                            FontWeight="SemiBold"
                            FontSize="12"
                            Margin="0,0,0,6" />
-                
+
                 <ListBox Grid.Row="1"
                          ItemsSource="{Binding Favorites}"
                          FontSize="12"
@@ -112,23 +119,32 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0"
-                                           Text="{Binding Name}"
-                                           VerticalAlignment="Center"
-                                           Cursor="Hand" />
-                                <Button Grid.Column="1" 
+
+                                <Button Grid.Column="0"
+                                        Content="{Binding Name}"
+                                        Command="{Binding DataContext.SelectFavoriteCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalContentAlignment="Left"
+                                        Padding="4,3"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Cursor="Hand" />
+
+                                <Button Grid.Column="1"
                                         Content="✕"
+                                        Command="{Binding DataContext.RemoveFavoritesCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}"
                                         FontSize="10"
                                         Padding="4,2"
-                                        Click="RemoveFavorite_Click"
-                                        Tag="{Binding}" />
+                                        ToolTip="Remove favorite" />
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
-                            <EventSetter Event="MouseLeftButtonUp"
-                                 Handler="Favorite_Click" />
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Stretch" />
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>

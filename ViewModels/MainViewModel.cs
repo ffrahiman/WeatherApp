@@ -175,6 +175,26 @@ namespace WeatherApp.ViewModels
             }
         }
 
+        /// <summary> Loads weather for a saved favorite city. </summary>
+        /// <param name="city">The favorite city for which to load weather.</param>
+        [RelayCommand]
+        public async Task SelectFavoriteAsync(FavoriteCity favorite)
+        {
+            if (favorite is null)
+                return;
+
+            var city = new City
+            {
+                Name = favorite.Name,
+                Country = favorite.Country,
+                CountryCode = favorite.CountryCode,
+                Latitude = favorite.Latitude,
+                Longitude = favorite.Longitude
+            };
+
+            await SelectCityAsync(city);
+        }
+
         /// <summary> Adds the currently selected city to favorites. </summary>
         [RelayCommand]
         private async Task AddFavoritesAsync()
