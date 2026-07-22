@@ -63,5 +63,48 @@ namespace WeatherApp.Services
             db.FavoriteCities.Remove(existing);
             await db.SaveChangesAsync();
         }
+
+        /// <summary> Load application settings or set default. </summary>
+        public async Task<AppSettings> GetSettingsAsync()
+        {
+            using var db = new AppDbContext();
+
+            var settings = await db.Settings.SingleOrDefaultAsync(s => s.Id == AppSettings.SettingsId);
+
+            if (settings is not null)
+            {
+                return settings;
+            }
+
+            settings = new AppSettings();
+
+            db.Settings.Add(settings);
+            await db.SaveChangesAsync();
+
+            return settings;
+        }
+
+        /// <summary> Save application settings to database. </summary>
+        /// <param name="settings">The application settings to save.</param>
+        public async Task SaveSettingsAsync(AppSettings settings)
+        {
+            ArgumentNullException.ThrowIfNull(settings);
+
+            using var db = new AppDbContext();
+
+            var existing = await db.Settings.SingleOrDefaultAsync(s => s.Id == AppSettings.SettingsId);
+
+            if (existing is null)
+            {
+                settings.Id = AppSettings.SettingsId;
+                db.Settings.Add(settings);
+            }
+            else
+            {
+                db.Entry(existing).CurrentValues.SetValues(settings);
+            }
+
+            await db.SaveChangesAsync();
+        }
     }
 }

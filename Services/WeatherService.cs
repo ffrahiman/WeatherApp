@@ -71,12 +71,14 @@ namespace WeatherApp.Services
         /// <param name="latitude">Latitude of the location.</param>
         /// <param name="longitude">Longitude of the location.</param>
         /// <returns>Tuple containing the current weather and daily forecast list, or null on failure.</returns>
-        public async Task<(CurrentWeather? Current, List<DailyForecast>? Forecast)> GetForecastAsync(double latitude, double longitude)
+        public async Task<(CurrentWeather? Current, List<DailyForecast>? Forecast)> GetForecastAsync(double latitude, double longitude, TemperatureUnit temperatureUnit)
         {
             try
             {   
+                string apiTemperatureUnit = temperatureUnit == TemperatureUnit.Celsius ? "celsius" : "fahrenheit";
                 string url = $"https://api.open-meteo.com/v1/forecast" +
                              $"?latitude={latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&longitude={longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
+                             $"&temperature_unit={apiTemperatureUnit}" +
                              $"&current=temperature_2m,windspeed_10m,weathercode,is_day" +
                              $"&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum,windspeed_10m_max" +
                              $"&timezone=auto&forecast_days=7";

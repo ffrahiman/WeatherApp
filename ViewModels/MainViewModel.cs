@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Runtime.Serialization;
 using WeatherApp.Models;
 using WeatherApp.Services;
 
@@ -53,12 +52,47 @@ namespace WeatherApp.ViewModels
         [ObservableProperty]
         private bool _isSidebarOpen;
 
+        /// <summary> Settings panel open status. </summary>
+        [ObservableProperty]
+        private bool _isSettingsOpen;
+
+        /// <summary>Persistent application settings.</summary>
+        [ObservableProperty]
+        private AppSettings _settings = new();
+
+        public string TemperatureUnitDisplay => Settings.TemperatureUnit == TemperatureUnit.Celsius ? "Celsius (°C)" : "Fahrenheit (°F)";
+
+        public string DefaultCityDisplayName => $"{Settings.DefaultCityName}, {Settings.DefaultCountry}";
+
+        partial void OnSettingsChanged(AppSettings value)
+        {
+            OnPropertyChanged(nameof(TemperatureUnitDisplay));
+            OnPropertyChanged(nameof(DefaultCityDisplayName));
+        }
+
         // Constructor
 
         public MainViewModel()
         {
             _weatherService = new WeatherService();
             _databaseService = new DatabaseService();
+        }
+
+        /// <summary> Loads persisted data and displays weather for the default city. </summary>
+        public async Task InitializeAsync()
+        {
+            try
+            {
+                Settings = await _databaseService.GetSettingsAsync();
+            }
+            catch (Exception ex)
+            {
+                Settings = new AppSettings();
+                StatusMessage = $"Could not load settings: {ex.Message}";
+            }
+
+            await LoadFavoritesAsync();
+            await SelectCityAsync(Settings.GetDefaultCity());
         }
 
         // Commands
@@ -121,7 +155,8 @@ namespace WeatherApp.ViewModels
             {
                 var (current, forecast) = await _weatherService.GetForecastAsync(
                     city.Latitude,
-                    city.Longitude
+                    city.Longitude,
+                    Settings.TemperatureUnit
                 );
 
                 CurrentWeather = current;
@@ -176,7 +211,7 @@ namespace WeatherApp.ViewModels
             }
         }
 
-        /// <summary> Loadsd all favorites from the database into the UI. </summary>
+        /// <summary> Loads all favorites from the database into the UI. </summary>
         [RelayCommand]
         public async Task LoadFavoritesAsync()
         {
@@ -189,5 +224,103 @@ namespace WeatherApp.ViewModels
                 StatusMessage = $"Could not load favorites: {ex.Message}";
             }
         }
+
+        /// <summary> Open, Close Settings </summary>
+        [RelayCommand]
+        private void OpenSettings()
+        {
+            IsSidebarOpen = false;
+            IsSettingsOpen = true;
+        }
+        [RelayCommand]
+        private void CloseSettings()
+        {
+            IsSettingsOpen = false;
+        }
+
+        /// <summary> Temperature Commands </summary>
+        [RelayCommand]
+        private async Task UseCelsiusAsync()
+        {
+            await ChangeTemperatureUnitAsync(TemperatureUnit.Celsius);
+        }
+        [RelayCommand]
+        private async Task UseFahrenheitAsync()
+        {
+            await ChangeTemperatureUnitAsync(TemperatureUnit.Fahrenheit);
+        }
+
+        private async Task ChangeTemperatureUnitAsync(TemperatureUnit unit)
+        {
+            if (Settings.TemperatureUnit == unit)
+                return;
+
+            var previousUnit = Settings.TemperatureUnit;
+            Settings.TemperatureUnit = unit;
+
+            try
+            {
+                await _databaseService.SaveSettingsAsync(Settings);
+                OnPropertyChanged(nameof(TemperatureUnitDisplay));
+
+                if (SelectedCity is not null)
+                {
+                    await SelectCityAsync(SelectedCity);
+                }
+            }
+            catch (Exception ex)
+            {
+                Settings.TemperatureUnit = previousUnit;
+                OnPropertyChanged(nameof(TemperatureUnitDisplay));
+                StatusMessage = $"Could not save temperature unit: {ex.Message}";
+            }
+        }
+
+        /// <summary> Default City Commands </summary>
+        [RelayCommand]
+        private async Task UseCurrentCityAsDefaultAsync()
+        {
+            if (SelectedCity is null)
+            {
+                StatusMessage = "Select a city before setting the default.";
+                return;
+            }
+
+            var previousCity = Settings.GetDefaultCity();
+            Settings.SetDefaultCity(SelectedCity);
+
+            try
+            {
+                await _databaseService.SaveSettingsAsync(Settings);
+                OnPropertyChanged(nameof(DefaultCityDisplayName));
+                StatusMessage = $"Default city set to {SelectedCity.Name}, {SelectedCity.Country}.";
+            }
+            catch (Exception ex)
+            {
+                Settings.SetDefaultCity(previousCity);
+                OnPropertyChanged(nameof(DefaultCityDisplayName));
+                StatusMessage = $"Could not save default city: {ex.Message}";
+            }
+        }
+
+        [RelayCommand]
+        private async Task ResetDefaultCityAsync()
+        {
+            var previousCity = Settings.GetDefaultCity();
+            Settings.ResetDefaultCity();
+
+            try
+            {
+                await _databaseService.SaveSettingsAsync(Settings);
+                OnPropertyChanged(nameof(DefaultCityDisplayName));
+                StatusMessage = $"Default city reset to {Settings.DefaultCityName}, {Settings.DefaultCountry}.";
+            }
+            catch (Exception ex)
+            {
+                Settings.SetDefaultCity(previousCity);
+                OnPropertyChanged(nameof(DefaultCityDisplayName));
+                StatusMessage = $"Could not reset default city: {ex.Message}";
+            }
+        }
     }
-}   
+}

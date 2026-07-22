@@ -17,6 +17,9 @@ namespace WeatherApp.Services
         /// <summary> Table of user's saved favorite cities. </summary>
         public DbSet<FavoriteCity> FavoriteCities { get; set; }
 
+        /// <summary> Application settings stores as single record. </summary>
+        public DbSet<AppSettings> Settings { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             string dbPath = Path.Combine(

@@ -7,6 +7,88 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Border Width="420"
+            Padding="24"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="#F7FAFC"
+            BorderBrush="#33000000"
+            BorderThickness="1"
+            CornerRadius="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Grid Grid.Row="0" Margin="0,0,0,24">
+                    <TextBlock Text="Settings"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center" />
+
+                    <Button Content="✕"
+                        Command="{Binding CloseSettingsCommand}"
+                        Width="34"
+                        Height="34"
+                        HorizontalAlignment="Right"
+                        ToolTip="Close settings" />
+                </Grid>
+
+                <!-- Temperature -->
+                <StackPanel Grid.Row="1" Margin="0,0,0,24">
+                    <TextBlock Text="Temperature unit"
+                           FontSize="15"
+                           FontWeight="SemiBold" />
+
+                    <TextBlock Text="{Binding TemperatureUnitDisplay}"
+                           Margin="0,4,0,12"
+                           Foreground="#59636E" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Celsius"
+                            Command="{Binding UseCelsiusCommand}"
+                            MinWidth="110"
+                            Padding="14,8"
+                            Margin="0,0,8,0" />
+
+                        <Button Content="Fahrenheit"
+                            Command="{Binding UseFahrenheitCommand}"
+                            MinWidth="110"
+                            Padding="14,8" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Default city -->
+                <StackPanel Grid.Row="2" Margin="0,0,0,18">
+                    <TextBlock Text="Startup city"
+                           FontSize="15"
+                           FontWeight="SemiBold" />
+
+                    <TextBlock Text="{Binding DefaultCityDisplayName}"
+                           Margin="0,4,0,12"
+                           Foreground="#59636E" />
+
+                    <Button Content="Use currently displayed city"
+                        Command="{Binding UseCurrentCityAsDefaultCommand}"
+                        HorizontalAlignment="Left"
+                        Padding="14,8"
+                        Margin="0,0,0,8" />
+
+                    <Button Content="Reset to Hof, Germany"
+                        Command="{Binding ResetDefaultCityCommand}"
+                        HorizontalAlignment="Left"
+                        Padding="14,8" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="3"
+                       Text="{Binding StatusMessage}"
+                       Foreground="#59636E"
+                       TextWrapping="Wrap" />
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

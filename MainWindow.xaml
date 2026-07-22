@@ -60,6 +60,21 @@
                    HorizontalAlignment="Left"
                    Visibility="{Binding IsSidebarOpen,
                        Converter={StaticResource BoolToVisibility}}" />
+
+        <Button Panel.ZIndex="4"
+                Command="{Binding CloseSettingsCommand}"
+                Visibility="{Binding IsSettingsOpen, Converter={StaticResource BoolToVisibility}}"
+                Background="#99000000"
+                BorderThickness="0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
         
+        <views:SettingsView Panel.ZIndex="5"
+                    Visibility="{Binding IsSettingsOpen, Converter={StaticResource BoolToVisibility}}" />
+
     </Grid>
 </Window>

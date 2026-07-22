@@ -136,11 +136,11 @@
 
             <Button Grid.Row="4"
                     Content="Settings"
+                    Command="{Binding OpenSettingsCommand}"
                     Height="42"
                     HorizontalContentAlignment="Left"
                     Padding="12,0"
-                    IsEnabled="False"
-                    ToolTip="Settings" />
+                    ToolTip="Open settings" />
         </Grid>
     </Border>
 

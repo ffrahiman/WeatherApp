@@ -16,7 +16,7 @@ namespace WeatherApp
             await db.Database.EnsureCreatedAsync();
 
             var mainViewModel = new MainViewModel();
-            await mainViewModel.LoadFavoritesAsync();
+            await mainViewModel.InitializeAsync();
 
             var mainWindow = new MainWindow(mainViewModel);
             mainWindow.Show();
