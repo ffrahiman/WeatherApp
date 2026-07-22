@@ -7,41 +7,81 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <!-- Current Weather -->
-    <StackPanel Grid.Row="0" Margin="0,0,0,24">
-        <TextBlock Text="{Binding SelectedCity.DisplayName}" 
-               FontSize="22"
-               FontWeight="Bold" />
+    <Grid Width="420"
+          TextElement.Foreground="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-            <TextBlock Text="{Binding CurrentWeather.WeatherIcon}"
-                   FontSize="48"
-                   Margin="0,0,16,0" />
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock FontSize="36"
-                       FontWeight="Light">
-                <Run Text="{Binding CurrentWeather.Temperature}" />
-                <Run Text="°C" />
-                </TextBlock>
-                <TextBlock Text="{Binding CurrentWeather.Description}"
-                       FontSize="14"
-                       Foreground="Gray" />
-                <TextBlock FontSize="12"
-                       Foreground="Gray">
-                <Run Text="Wind: "/>
-                <Run Text="{Binding CurrentWeather.WindSpeed}"/>
-                <Run Text="km/h"/>
-                </TextBlock>
-            </StackPanel>
+        <!-- Current City Weather and Favorite Action -->
+        <Grid Grid.Row="0">
+            <TextBlock Text="{Binding SelectedCity.DisplayName}"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+
+            <Button Content=" ☆ "
+                    Style="{StaticResource RoundIconButtonStyle}"
+                    Command="{Binding AddFavoritesCommand}"
+                    HorizontalAlignment="Right"
+                    ToolTip="Add to Favorites" />
+
+        </Grid>
+
+        <!-- Current Temperature -->
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,12,0,0">
+            <TextBlock FontSize="84"
+                       FontWeight="ExtraLight"
+                       VerticalAlignment="Center">
+                    <Run Text="{Binding CurrentWeather.Temperature, StringFormat={}{0:0}}" />
+                    <Run Text="°" />
+            </TextBlock>
         </StackPanel>
 
-        <!-- Add to favorites button -->
-        <Button Content=" + Add to Favorites"
-            Command="{Binding AddFavoritesCommand}"
-            HorizontalAlignment="Left"
-            Margin="0,12,0,0"
-            Padding="12,6"
-            FontSize="12" />
-    </StackPanel>
+        <!-- Description -->
+        <TextBlock Grid.Row="2"
+                   Text="{Binding CurrentWeather.Description}"
+                   FontSize="18"
+                   FontWeight="SemiBold"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap"
+                   HorizontalAlignment="Center"/>
+
+        <!-- Extra Info -->
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,8,0,0"
+                    TextElement.Foreground="{StaticResource SecondaryWeatherTextBrush}">
+            <TextBlock>
+                <Run Text="H: " />
+                <Run Text="{Binding Forecast[0].TempMax, StringFormat={}{0:0}}" />
+                <Run Text="°" />
+            </TextBlock>
+
+            <TextBlock Text="  •  " />
+
+            <TextBlock>
+                <Run Text="L: " />
+                <Run Text="{Binding Forecast[0].TempMin, StringFormat={}{0:0}}" />
+                <Run Text="°" />
+            </TextBlock>
+
+            <TextBlock Text="  •  " />
+
+            <TextBlock>
+                <Run Text="Wind: " />
+                <Run Text="{Binding CurrentWeather.WindSpeed, StringFormat={}{0:0}}" />
+                <Run Text=" km/h" />
+            </TextBlock>
+        </StackPanel>
+    </Grid>
 
 </UserControl>

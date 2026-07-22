@@ -17,27 +17,29 @@
         </Border>
 
         <!-- Right Panel: Current Weather + Forecast -->
-        <Grid  Panel.ZIndex="1" Margin="80,32,32,32" TextElement.Foreground="White">
+        <Grid  Panel.ZIndex="1" Margin="24,24,24,28" TextElement.Foreground="White">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <views:CurrentWeatherView Grid.Row="0"
-                          Margin="0,0,0,24" />
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Margin="40,36,40,20" />
 
-            <views:ForecastView Grid.Row="1" />
+            <views:ForecastView Grid.Row="1"
+                                MaxHeight="190"
+                                Margin="0,12,0,0" />
             
         </Grid>
         <Button Panel.ZIndex="1"
                 Content="☰"
+                Style="{StaticResource RoundIconButtonStyle}"
                 Command="{Binding ToggleSidebarCommand}"
-                Width="44"
-                Height="44"
                 Margin="20"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                FontSize="20"
                 ToolTip="Open navigation" />
         <Button Panel.ZIndex="2"
                 Command="{Binding CloseSidebarCommand}"
