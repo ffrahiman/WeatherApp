@@ -13,6 +13,7 @@ namespace WeatherApp.ViewModels
     {
         private readonly WeatherService _weatherService;
         private readonly DatabaseService _databaseService;
+        private readonly WeatherRecommendationService _recommendationService;
 
         // Observable Properties
 
@@ -31,6 +32,10 @@ namespace WeatherApp.ViewModels
         /// <summary> Weather Forecast for selected City. </summary>
         [ObservableProperty]
         private List<DailyForecast> _forecast = new();
+
+        /// <summary> Recommendation based on the weather. </summary>
+        [ObservableProperty]
+        private string _recommendationText = string.Empty;
 
         /// <summary> Search Result Cities </summary>
         [ObservableProperty]
@@ -76,6 +81,7 @@ namespace WeatherApp.ViewModels
         {
             _weatherService = new WeatherService();
             _databaseService = new DatabaseService();
+            _recommendationService = new WeatherRecommendationService();
         }
 
         /// <summary> Loads persisted data and displays weather for the default city. </summary>
@@ -162,12 +168,16 @@ namespace WeatherApp.ViewModels
                 CurrentWeather = current;
                 Forecast = forecast ?? new List<DailyForecast>();
 
+                RecommendationText = current is null ? string.Empty
+                                                     : _recommendationService.GetRecommendation(current, Forecast.FirstOrDefault(), Settings.TemperatureUnit);
+
                 if (current is null)
                     StatusMessage = "Could not load weather data.";
             }
             catch (Exception ex)
             {
                 StatusMessage = $"Failed to load weather: {ex.Message}";
+                RecommendationText = string.Empty;
             }
             finally
             {
