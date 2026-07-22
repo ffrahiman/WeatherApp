@@ -49,6 +49,10 @@ namespace WeatherApp.ViewModels
         [ObservableProperty]
         private string _statusMessage = string.Empty;
 
+        /// <summary> Navigation Sidebar open status. </summary>
+        [ObservableProperty]
+        private bool _isSidebarOpen;
+
         // Constructor
 
         public MainViewModel()
@@ -58,6 +62,20 @@ namespace WeatherApp.ViewModels
         }
 
         // Commands
+
+        /// <summary> Opens or Closes the navigation sidebar. </summary>
+        [RelayCommand]
+        private void ToggleSidebar()
+        {
+            IsSidebarOpen = !IsSidebarOpen;
+        }
+
+        /// <summary> Closes navigation sidebar. </summary>
+        [RelayCommand]
+        private void CloseSidebar()
+        {
+            IsSidebarOpen = false;
+        }
 
         /// <summary> Searches for cities matching current search query </summary>
         [RelayCommand]
