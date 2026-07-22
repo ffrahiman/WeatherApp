@@ -23,44 +23,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
-            <!-- Current Weather -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,24">
-                <TextBlock Text="{Binding SelectedCity.DisplayName}" 
-                           FontSize="22"
-                           FontWeight="Bold" />
 
-                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                    <TextBlock Text="{Binding CurrentWeather.WeatherIcon}"
-                               FontSize="48"
-                               Margin="0,0,16,0" />
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock FontSize="36"
-                                   FontWeight="Light">
-                            <Run Text="{Binding CurrentWeather.Temperature}" />
-                            <Run Text="°C" />
-                        </TextBlock>
-                        <TextBlock Text="{Binding CurrentWeather.Description}"
-                                   FontSize="14"
-                                   Foreground="Gray" />
-                        <TextBlock FontSize="12"
-                                   Foreground="Gray">
-                            <Run Text="Wind: "/>
-                            <Run Text="{Binding CurrentWeather.WindSpeed}"/>
-                            <Run Text="km/h"/>
-                        </TextBlock>
-                    </StackPanel>
-                </StackPanel>
-                
-                <!-- Add to favorites button -->
-                <Button Content=" + Add to Favorites"
-                        Command="{Binding AddFavoritesCommand}"
-                        HorizontalAlignment="Left"
-                        Margin="0,12,0,0"
-                        Padding="12,6"
-                        FontSize="12" />
-            </StackPanel>
-            
+            <views:CurrentWeatherView Grid.Row="0"
+                          Margin="0,0,0,24" />
+
             <!-- 7-Day Forecast -->
             <TextBlock Grid.Row="1"
                        Text="7-Day Forecast"
