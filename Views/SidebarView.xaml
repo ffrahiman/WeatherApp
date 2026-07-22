@@ -10,104 +10,138 @@
     <!-- Left Sidebar: search + favorites -->
     <Border Background="#F2F5F8"
         Padding="18">
-        <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+        
 
             <!-- Close Button -->
-            <Button Content="✕"
-                Command="{Binding CloseSidebarCommand}"
-                Width="34"
-                Height="34"
-                HorizontalAlignment="Left"
-                Margin="0,0,0,18"
-                ToolTip="Close navigation" />
+            <Button Grid.Row="0"
+                    Content="✕"
+                    Command="{Binding CloseSidebarCommand}"
+                    Width="34"
+                    Height="34"
+                    HorizontalAlignment="Left"
+                    Margin="0,0,0,18"
+                    ToolTip="Close navigation" />
 
-            <!-- Search Box -->
-            <TextBlock Text="City Search"
-           FontSize="13"
-           FontWeight="SemiBold"
-           Margin="0,0,0,6" />
-            <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-         Padding="8,6"
-         FontSize="13" />
-            <Button Content="Search"
-        Command="{Binding SearchCitiesCommand}" 
-        Margin="0,6,0,0"
-        Padding="0,7"
-        FontSize="13" />
+            <StackPanel Grid.Row="1">
+                <!-- Search Box -->
+                <TextBlock Text="City Search"
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Margin="0,0,0,6" />
+                <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                            Padding="8,6"
+                            FontSize="13" />
+                <Button Content="Search"
+                        Command="{Binding SearchCitiesCommand}" 
+                        Margin="0,6,0,0"
+                        Padding="0,7"
+                        FontSize="13" />
 
-            <!-- Loading Indicator -->
-            <TextBlock Text="Loading..."
-           FontSize="12"
-           Foreground="Gray"
-           Margin="0,6,0,0"
-           Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
+                <!-- Loading Indicator -->
+                <TextBlock Text="Loading..."
+                           FontSize="12"
+                           Foreground="Gray"
+                           Margin="0,6,0,0"
+                           Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
 
-            <!-- Status Message -->
-            <TextBlock Text="{Binding StatusMessage}"
-           FontSize="12"
-           Foreground="OrangeRed"
-           TextWrapping="Wrap"
-           Margin="0,4,0,0" />
+                <!-- Status Message -->
+                <TextBlock Text="{Binding StatusMessage}"
+                           FontSize="12"
+                           Foreground="OrangeRed"
+                           TextWrapping="Wrap"
+                           Margin="0,4,0,0" />
+            </StackPanel>
 
-            <!-- Search Results -->
-            <TextBlock Text="Results"
-           FontWeight="SemiBold"
-           FontSize="12"
-           Margin="0,12,0,4" />
+            <StackPanel Grid.Row="2">
+                <!-- Search Results -->
+                <TextBlock Text="Results"
+                           FontWeight="SemiBold"
+                           FontSize="12"
+                           Margin="0,12,0,4" />
 
-            <ListBox ItemsSource="{Binding SearchResults}"
-         MaxHeight="160"
-         FontSize="12">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding DisplayName}"
-                       Padding="4,3"
-                       Cursor="Hand" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <EventSetter Event="MouseLeftButtonUp"
-                         Handler="SearchResult_Click" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
+                <ListBox ItemsSource="{Binding SearchResults}"
+                         MaxHeight="140"
+                         FontSize="12"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}"
+                                       Padding="4,3"
+                                       Cursor="Hand" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="MouseLeftButtonUp"
+                                         Handler="SearchResult_Click" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
 
             <!-- Favorites -->
-            <TextBlock Text="Favorites" 
-           FontWeight="SemiBold"
-           FontSize="12"
-           Margin="0,16,0,4" />
-            <ListBox ItemsSource="{Binding Favorites}"
-         FontSize="12">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0"
-                           Text="{Binding Name}"
-                           VerticalAlignment="Center"
-                           Cursor="Hand" />
-                            <Button Grid.Column="1" 
-                        Content="✕"
-                        FontSize="10"
-                        Padding="4,2"
-                        Click="RemoveFavorite_Click"
-                        Tag="{Binding}" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <EventSetter Event="MouseLeftButtonUp"
-                         Handler="Favorite_Click" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
-        </StackPanel>
+            <Grid Grid.Row="3"
+                  Margin="0,16,0,12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0"
+                           Text="Favorites" 
+                           FontWeight="SemiBold"
+                           FontSize="12"
+                           Margin="0,0,0,6" />
+                
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding Favorites}"
+                         FontSize="12"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Name}"
+                                           VerticalAlignment="Center"
+                                           Cursor="Hand" />
+                                <Button Grid.Column="1" 
+                                        Content="✕"
+                                        FontSize="10"
+                                        Padding="4,2"
+                                        Click="RemoveFavorite_Click"
+                                        Tag="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="MouseLeftButtonUp"
+                                 Handler="Favorite_Click" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+
+            <Button Grid.Row="4"
+                    Content="Settings"
+                    Height="42"
+                    HorizontalContentAlignment="Left"
+                    Padding="12,0"
+                    IsEnabled="False"
+                    ToolTip="Settings" />
+        </Grid>
     </Border>
 
 </UserControl>
