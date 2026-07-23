@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WeatherApp.Models;
 
 namespace WeatherApp.Services
 
@@ -15,7 +16,7 @@ namespace WeatherApp.Services
         public static string GetDescription(int code) => code switch
         {
             0               => "Clear sky",
-            1               => "Mainly clear",
+            1               => "Mostly clear",
             2               => "Partly cloudy",
             3               => "Overcast",
             45 or 48        => "Foggy",
@@ -34,5 +35,44 @@ namespace WeatherApp.Services
             96 or 99        => "Thunderstorm with hail",
             _               => "Unknown"
         };
+
+        /// <summary>
+        /// Returns the visual theme for a weather code and time of day.
+        /// </summary>
+        public static WeatherTheme GetTheme(int code, bool isDay)
+        {
+            if (code is 0 or 1)
+            {
+                return isDay ? WeatherTheme.ClearDay : WeatherTheme.ClearNight;
+            }
+
+            if (code is 2 or 3)
+            {
+                return isDay ? WeatherTheme.CloudyDay : WeatherTheme.CloudyNight;
+            }
+
+            if (code is 45 or 48)
+            {
+                return isDay ? WeatherTheme.FogDay : WeatherTheme.FogNight;
+            }
+
+            if (code is 51 or 53 or 55 or 56 or 57 or 61 or 63 or 65 or 66 or 67 or 80 or 81 or 82)
+            {
+                return isDay ? WeatherTheme.RainDay : WeatherTheme.RainNight;
+            }
+
+            if (code is 71 or 73 or 75 or 77 or 85 or 86)
+            {
+                return isDay ? WeatherTheme.SnowDay : WeatherTheme.SnowNight;
+            }
+
+            if (code is 95 or 96 or 99)
+            {
+                return isDay ? WeatherTheme.StormDay : WeatherTheme.StormNight;
+            }
+
+            return isDay ? WeatherTheme.CloudyDay : WeatherTheme.CloudyNight;
+        }
     }
+
 }

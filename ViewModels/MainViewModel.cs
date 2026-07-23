@@ -17,6 +17,10 @@ namespace WeatherApp.ViewModels
 
         // Observable Properties
 
+        /// <summary> Visual theme based on weather and time of day. </summary>
+        [ObservableProperty]
+        private WeatherTheme _weatherTheme = WeatherTheme.ClearDay;
+
         /// <summary> Search Box Test </summary>
         [ObservableProperty]
         private string _searchQuery = string.Empty;
@@ -167,6 +171,11 @@ namespace WeatherApp.ViewModels
 
                 CurrentWeather = current;
                 Forecast = forecast ?? new List<DailyForecast>();
+
+                if (current is not null)
+                {
+                    WeatherTheme = WeatherCodeHelper.GetTheme(current.WeatherCode, current.IsDay);
+                }
 
                 RecommendationText = current is null ? string.Empty
                                                      : _recommendationService.GetRecommendation(current, Forecast.FirstOrDefault(), Settings.TemperatureUnit);
