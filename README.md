@@ -16,11 +16,7 @@ WeatherApp ist eine WPF-Desktopanwendung fuer aktuelle Wetterdaten, Vorhersagen 
 
 - C# / WPF
 - .NET 10 Windows
-- MVVM mit CommunityToolkit.Mvvm
-- Entity Framework Core mit SQLite
-- Microsoft.Extensions.DependencyInjection
 - Open-Meteo API
-- xUnit fuer Unit Tests
 
 ## Ausfuehren
 
