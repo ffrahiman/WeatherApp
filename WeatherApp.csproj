@@ -28,4 +28,9 @@
     <Page Include="App.xaml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="WeatherApp.Tests\**\*.cs" />
+    <None Remove="WeatherApp.Tests\**" />
+  </ItemGroup>
+
 </Project>
