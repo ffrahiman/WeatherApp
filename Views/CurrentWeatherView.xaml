@@ -24,11 +24,11 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
 
-            <Button Content=" ☆ "
+            <Button Content="{Binding FavoriteButtonText}"
                     Style="{StaticResource RoundIconButtonStyle}"
-                    Command="{Binding AddFavoritesCommand}"
+                    Command="{Binding ToggleFavoriteCommand}"
                     HorizontalAlignment="Right"
-                    ToolTip="Add to Favorites" />
+                    ToolTip="{Binding FavoriteButtonToolTip}" />
 
         </Grid>
 

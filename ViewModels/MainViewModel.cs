@@ -87,6 +87,21 @@ namespace WeatherApp.ViewModels
             OnPropertyChanged(nameof(DefaultCityDisplayName));
         }
 
+        /// <summary> Whether the selected city is saved as a favorite. </summary>
+        [ObservableProperty]
+        private bool _isSelectedCityFavorite;
+
+        public string FavoriteButtonText => IsSelectedCityFavorite ? "★" : "☆";
+
+        public string FavoriteButtonToolTip => IsSelectedCityFavorite ? "Remove from Favorites" : "Add to Favorites";
+
+        partial void OnIsSelectedCityFavoriteChanged(bool value)
+        {
+            OnPropertyChanged(nameof(FavoriteButtonText));
+            OnPropertyChanged(nameof(FavoriteButtonToolTip));
+        }
+
+
         // Constructor
 
         public MainViewModel(
@@ -173,6 +188,7 @@ namespace WeatherApp.ViewModels
                 return;
 
             SelectedCity = city;
+            UpdateSelectedCityFavoriteState();
             IsLoading = true;
             StatusMessage = String.Empty;
 
@@ -188,6 +204,7 @@ namespace WeatherApp.ViewModels
                 Forecast = forecast ?? new List<DailyForecast>();
                 TodayForecast = Forecast.FirstOrDefault();
                 HourlyForecast = hourly ?? new List<HourlyForecast>();
+                UpdateSelectedCityFavoriteState();
 
                 if (current is not null)
                 {
@@ -240,19 +257,32 @@ namespace WeatherApp.ViewModels
 
         /// <summary> Adds the currently selected city to favorites. </summary>
         [RelayCommand]
-        private async Task AddFavoritesAsync()
+        private async Task ToggleFavoriteAsync()
         {
             if (SelectedCity is null)
                 return;
 
             try
             {
-                await _databaseService.AddFavoriteCityAsync(SelectedCity);
+                var existingFavorite = FindFavorite(SelectedCity);
+
+                if (existingFavorite is null)
+                {
+                    await _databaseService.AddFavoriteCityAsync(SelectedCity);
+                    StatusMessage = $"{SelectedCity.Name} added to favorites.";
+                }
+                else
+                {
+                    await _databaseService.RemoveFavoriteCityAsync(existingFavorite);
+                    StatusMessage = $"{SelectedCity.Name} removed from favorites.";
+                }
+
                 await LoadFavoritesAsync();
+                UpdateSelectedCityFavoriteState();
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Could not save favorite: {ex.Message}";
+                StatusMessage = $"Could not update favorite: {ex.Message}";
             }
         }
 
@@ -267,6 +297,7 @@ namespace WeatherApp.ViewModels
             {
                 await _databaseService.RemoveFavoriteCityAsync(city);
                 await LoadFavoritesAsync();
+                UpdateSelectedCityFavoriteState();
             }
             catch (Exception ex)
             {
@@ -281,6 +312,7 @@ namespace WeatherApp.ViewModels
             try
             {
                 Favorites = await _databaseService.GetFavoriteCitiesAsync();
+                UpdateSelectedCityFavoriteState();
             }
             catch (Exception ex)
             {
@@ -384,6 +416,23 @@ namespace WeatherApp.ViewModels
                 OnPropertyChanged(nameof(DefaultCityDisplayName));
                 StatusMessage = $"Could not reset default city: {ex.Message}";
             }
+        }
+
+        private void UpdateSelectedCityFavoriteState()
+        {
+            IsSelectedCityFavorite = SelectedCity is not null &&
+                                     Favorites.Any(f => IsSameCity(SelectedCity, f));
+        }
+
+        private static bool IsSameCity(City city, FavoriteCity favorite)
+        {
+            return city.Name == favorite.Name &&
+                   city.Country == favorite.Country;
+        }
+
+        private FavoriteCity? FindFavorite(City city)
+        {
+            return Favorites.FirstOrDefault(f => IsSameCity(city, f));
         }
     }
 }
