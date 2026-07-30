@@ -135,7 +135,8 @@ namespace WeatherApp.Services
                             WeatherCode = weatherCode,
                             PrecipitationSum = daily.Precipitation_Sum[i],
                             WindSpeedMax = daily.Windspeed_10m_Max[i],
-                            Description = WeatherCodeHelper.GetDescription(weatherCode)
+                            Description = WeatherCodeHelper.GetDescription(weatherCode),
+                            WeatherIcon = WeatherCodeHelper.GetIcon(weatherCode)
                         });
                     }
                 }
@@ -178,7 +179,8 @@ namespace WeatherApp.Services
                             Time = forecastTime,
                             Temperature = hourly.Temperature_2m[i],
                             WeatherCode = weatherCode,
-                            Precipitation = hourly.Precipitation[i]
+                            Precipitation = hourly.Precipitation[i],
+                            WeatherIcon = WeatherCodeHelper.GetIcon(weatherCode)
                         });
                     }
                 }

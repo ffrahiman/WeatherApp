@@ -30,4 +30,22 @@ public class WeatherCodeHelperTests
 
         Assert.Equal(expectedTheme, theme);
     }
+
+    [Theory]
+    [InlineData(0, "☀️")]
+    [InlineData(1, "🌤️")]
+    [InlineData(2, "⛅")]
+    [InlineData(3, "☁")]
+    [InlineData(45, "≋")]
+    [InlineData(61, "🌧️")]
+    [InlineData(71, "🌨️")]
+    [InlineData(75, "❄️")]
+    [InlineData(95, "⛈️")]
+    [InlineData(-1, " ")]
+    public void GetIcon_ReturnsExpectedIconForWeatherCode(int code, string expectedIcon)
+    {
+        string icon = WeatherCodeHelper.GetIcon(code);
+
+        Assert.Equal(expectedIcon, icon);
+    }
 }

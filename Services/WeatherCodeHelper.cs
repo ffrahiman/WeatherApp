@@ -70,6 +70,21 @@ namespace WeatherApp.Services
 
             return isDay ? WeatherTheme.CloudyDay : WeatherTheme.CloudyNight;
         }
-    }
 
+        /// <summary> Returns an emoji icon for a given WMO weather code. </summary>
+        public static string GetIcon(int code) => code switch
+        {
+            0 => "☀️",
+            1 => "🌤️",
+            2 => "⛅",
+            3 => "☁",
+            45 or 48 => "≋",
+            51 or 53 or 80 or 81=> "🌦️",
+            55 or 56 or 57  or 61 or 63 or 65 or 66 or 67 => "🌧️",
+            71 or 73 or 77 => "🌨️",
+            75 or 85 or 86 => "❄️",
+            82 or 95 or 96 or 99 => "⛈️",
+            _ => " "
+        };
+    }
 }

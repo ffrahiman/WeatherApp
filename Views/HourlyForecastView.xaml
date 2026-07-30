@@ -30,6 +30,11 @@
                                        FontSize="11"
                                        HorizontalAlignment="Center"
                                        Foreground="{StaticResource SecondaryWeatherTextBrush}" />
+                            <TextBlock Text="{Binding WeatherIcon}"
+                                       FontFamily="Segoe UI Symbol"
+                                       FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,3,0,0"/>
                             <TextBlock HorizontalAlignment="Center"
                                        FontSize="14"
                                        FontWeight="SemiBold"
