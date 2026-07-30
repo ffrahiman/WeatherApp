@@ -55,12 +55,14 @@ namespace WeatherApp.Services
             catch (HttpRequestException ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Network error: {ex.Message}");
-                return new List<City>();
+                throw new WeatherServiceException(
+                    "Could not connect to the city search service. Please check your internet connection.", ex);
             }
             catch (JsonException ex)
             {
                 System.Diagnostics.Debug.WriteLine($"JSON parse error: {ex.Message}");
-                return new List<City>();
+                throw new WeatherServiceException(
+                    "The city search service returned data in an unexpected format.", ex);
             }
         }
 
@@ -124,12 +126,14 @@ namespace WeatherApp.Services
             catch (HttpRequestException ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Network error: {ex.Message}");
-                return (null, null);
+                throw new WeatherServiceException(
+                    "Could not connect to the weather service. Please check your internet connection.", ex);
             }
             catch (JsonException ex)
             {
                 System.Diagnostics.Debug.WriteLine($"JSON parse error: {ex.Message}");
-                return (null, null);
+                throw new WeatherServiceException(
+                    "The weather service returned data in an unexpected format.", ex);
             }
         }
     }

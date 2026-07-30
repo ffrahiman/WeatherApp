@@ -12,18 +12,30 @@ namespace WeatherApp
     {
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
-            using var db = new AppDbContext();
-            await db.Database.MigrateAsync();
+            try
+            {
+                await using var db = new AppDbContext();
+                await db.Database.MigrateAsync();
 
-            IWeatherService weatherService = new WeatherService();
-            IDatabaseService databaseService = new DatabaseService();
-            IWeatherRecommendationService recommendationService = new WeatherRecommendationService();
+                IWeatherService weatherService = new WeatherService();
+                IDatabaseService databaseService = new DatabaseService();
+                IWeatherRecommendationService recommendationService = new WeatherRecommendationService();
 
-            var mainViewModel = new MainViewModel(weatherService, databaseService, recommendationService);
-            await mainViewModel.InitializeAsync();
+                var mainViewModel = new MainViewModel(weatherService, databaseService, recommendationService);
+                await mainViewModel.InitializeAsync();
 
-            var mainWindow = new MainWindow(mainViewModel);
-            mainWindow.Show();
+                var mainWindow = new MainWindow(mainViewModel);
+                mainWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"The application could not start correctly:\n\n{ex.Message}",
+                    "Startup Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                Shutdown();
+            }
         }
     }
 }

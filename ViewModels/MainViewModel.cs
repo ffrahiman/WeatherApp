@@ -143,7 +143,11 @@ namespace WeatherApp.ViewModels
                 if (SearchResults.Count == 0)
                     StatusMessage = "No cities found. Try a different name.";
             }
-            catch (Exception ex) 
+            catch (WeatherServiceException ex)
+            {
+                StatusMessage = ex.Message;
+            }
+            catch (Exception ex)
             {
                 StatusMessage = $"Search failed: {ex.Message}";
             }
@@ -180,11 +184,18 @@ namespace WeatherApp.ViewModels
                     WeatherTheme = WeatherCodeHelper.GetTheme(current.WeatherCode, current.IsDay);
                 }
 
-                RecommendationText = current is null ? string.Empty
-                                                     : _recommendationService.GetRecommendation(current, Forecast.FirstOrDefault(), Settings.TemperatureUnit);
+                RecommendationText = current is null
+                    ? string.Empty
+                    : _recommendationService.GetRecommendation(current, Forecast.FirstOrDefault(),
+                        Settings.TemperatureUnit);
 
                 if (current is null)
                     StatusMessage = "Could not load weather data.";
+            }
+            catch (WeatherServiceException ex)
+            {
+                StatusMessage = ex.Message;
+                RecommendationText = string.Empty;
             }
             catch (Exception ex)
             {
