@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Markup;
-
-namespace WeatherApp.Models
+﻿namespace WeatherApp.Models
 
 /// <summary>
 /// Represents weather forecast data for a single day. 

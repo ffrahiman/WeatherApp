@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WeatherApp.Models
+﻿namespace WeatherApp.Models
 
 /// <summary>
 /// Represents a city returned from the Open-Meteo Geocoding API or stores as a user favourite.

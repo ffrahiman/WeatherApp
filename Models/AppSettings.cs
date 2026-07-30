@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WeatherApp.Models;
+﻿namespace WeatherApp.Models;
 
 /// <summary> Persisted application settings stored in the local database. </summary>
 

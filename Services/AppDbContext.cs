@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
 using WeatherApp.Models;
 
@@ -26,7 +23,7 @@ namespace WeatherApp.Services
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "WeatherApp",
                 "weather.db"
-                );
+            );
 
             Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
             options.UseSqlite($"Data Source={dbPath}");
