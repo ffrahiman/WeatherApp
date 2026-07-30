@@ -108,17 +108,35 @@ namespace WeatherApp.Services
                 List<DailyForecast>? forecast = null;
                 if (response.Daily is not null)
                 {
-                    forecast = response.Daily.Time
-                        .Select((dateStr, i) => new DailyForecast
+                    var daily = response.Daily;
+
+                    int forecastCount = new[]
+                    {
+                        daily.Time.Count,
+                        daily.Temperature_2m_Max.Count,
+                        daily.Temperature_2m_Min.Count,
+                        daily.WeatherCode.Count,
+                        daily.Precipitation_Sum.Count,
+                        daily.Windspeed_10m_Max.Count
+                    }.Min();
+
+                    forecast = new List<DailyForecast>();
+
+                    for (int i = 0; i < forecastCount; i++)
+                    {
+                        int weatherCode = daily.WeatherCode[i];
+
+                        forecast.Add(new DailyForecast
                         {
-                            Date = DateTime.Parse(dateStr),
-                            TempMax = response.Daily.Temperature_2m_Max[i],
-                            TempMin = response.Daily.Temperature_2m_Min[i],
-                            WeatherCode = response.Daily.WeatherCode[i],
-                            PrecipitationSum = response.Daily.Precipitation_Sum[i],
-                            WindSpeedMax = response.Daily.Windspeed_10m_Max[i],
-                            Description = WeatherCodeHelper.GetDescription(response.Daily.WeatherCode[i])
-                        }).ToList();
+                            Date = DateTime.Parse(daily.Time[i]),
+                            TempMax = daily.Temperature_2m_Max[i],
+                            TempMin = daily.Temperature_2m_Min[i],
+                            WeatherCode = weatherCode,
+                            PrecipitationSum = daily.Precipitation_Sum[i],
+                            WindSpeedMax = daily.Windspeed_10m_Max[i],
+                            Description = WeatherCodeHelper.GetDescription(weatherCode)
+                        });
+                    }
                 }
 
                 return (current, forecast);
