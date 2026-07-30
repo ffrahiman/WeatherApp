@@ -11,9 +11,9 @@ namespace WeatherApp.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        private readonly WeatherService _weatherService;
-        private readonly DatabaseService _databaseService;
-        private readonly WeatherRecommendationService _recommendationService;
+        private readonly IWeatherService _weatherService;
+        private readonly IDatabaseService _databaseService;
+        private readonly IWeatherRecommendationService _recommendationService;
 
         // Observable Properties
 
@@ -81,11 +81,14 @@ namespace WeatherApp.ViewModels
 
         // Constructor
 
-        public MainViewModel()
+        public MainViewModel(
+            IWeatherService weatherService,
+            IDatabaseService databaseService,
+            IWeatherRecommendationService recommendationService)
         {
-            _weatherService = new WeatherService();
-            _databaseService = new DatabaseService();
-            _recommendationService = new WeatherRecommendationService();
+            _weatherService = weatherService;
+            _databaseService = databaseService;
+            _recommendationService = recommendationService;
         }
 
         /// <summary> Loads persisted data and displays weather for the default city. </summary>

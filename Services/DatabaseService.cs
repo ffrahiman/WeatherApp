@@ -11,7 +11,7 @@ namespace WeatherApp.Services
 /// </summary>
 
 {
-    public class DatabaseService
+    public class DatabaseService : IDatabaseService
     {
         /// <summary> Retrieves all saved favortie cities from the database. </summary>
         /// <returns>A list of favorite cities.</returns>

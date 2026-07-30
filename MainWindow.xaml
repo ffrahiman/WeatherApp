@@ -47,7 +47,7 @@
             <GradientStop Color="#53657A" Offset="1" />
         </LinearGradientBrush>
 
-        <LinearGradientBrush x:Key="FogDayBackground" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush x:Key="FogDayBackground" StartPoint="0,0" EndPoint="0,1">  
             <GradientStop Color="#9AAAB1" Offset="0" />
             <GradientStop Color="#667880" Offset="1" />
         </LinearGradientBrush>

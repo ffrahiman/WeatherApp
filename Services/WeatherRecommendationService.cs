@@ -9,7 +9,7 @@ namespace WeatherApp.Services;
 /// Provides practical weather recommendations based on the current weather conditions.
 /// </summary>
 
-public class WeatherRecommendationService
+public class WeatherRecommendationService : IWeatherRecommendationService
 {
 
     /// <summary> Returns the highest-priority recommendation for the current weather. </summary>

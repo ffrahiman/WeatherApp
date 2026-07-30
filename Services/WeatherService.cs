@@ -12,7 +12,7 @@ namespace WeatherApp.Services
 /// </summary>
 
 {
-    public class WeatherService
+    public class WeatherService : IWeatherService
     {
         private readonly HttpClient _httpClient;
 

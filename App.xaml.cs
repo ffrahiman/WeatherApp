@@ -15,12 +15,15 @@ namespace WeatherApp
             using var db = new AppDbContext();
             await db.Database.EnsureCreatedAsync();
 
-            var mainViewModel = new MainViewModel();
+            IWeatherService weatherService = new WeatherService();
+            IDatabaseService databaseService = new DatabaseService();
+            IWeatherRecommendationService recommendationService = new WeatherRecommendationService();
+
+            var mainViewModel = new MainViewModel(weatherService, databaseService, recommendationService);
             await mainViewModel.InitializeAsync();
 
             var mainWindow = new MainWindow(mainViewModel);
             mainWindow.Show();
         }
     }
-
 }
