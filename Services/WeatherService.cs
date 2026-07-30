@@ -70,7 +70,7 @@ namespace WeatherApp.Services
         /// <param name="latitude">Latitude of the location.</param>
         /// <param name="longitude">Longitude of the location.</param>
         /// <returns>Tuple containing the current weather and daily forecast list, or null on failure.</returns>
-        public async Task<(CurrentWeather? Current, List<DailyForecast>? Forecast)> GetForecastAsync(double latitude, double longitude, TemperatureUnit temperatureUnit)
+        public async Task<(CurrentWeather? Current, List<DailyForecast>? Forecast, List<HourlyForecast>? Hourly)> GetForecastAsync(double latitude, double longitude, TemperatureUnit temperatureUnit)
         {
             try
             {   
@@ -80,6 +80,7 @@ namespace WeatherApp.Services
                              $"&temperature_unit={apiTemperatureUnit}" +
                              $"&current=temperature_2m,windspeed_10m,weathercode,is_day" +
                              $"&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum,windspeed_10m_max" +
+                             $"&hourly=temperature_2m,weathercode,precipitation"+
                              $"&timezone=auto&forecast_days=7";
 
                 System.Diagnostics.Debug.WriteLine($"Calling URL: {url}");
@@ -88,7 +89,7 @@ namespace WeatherApp.Services
                 var response = JsonSerializer.Deserialize<ForecastResponse>(json, JsonOptions);
 
                 if (response is null)
-                    return (null, null);
+                    return (null, null, null);
 
                 //Map current weather
                 CurrentWeather? current = null;
@@ -139,7 +140,50 @@ namespace WeatherApp.Services
                     }
                 }
 
-                return (current, forecast);
+                // Map hourly forecast
+                List<HourlyForecast>? hourlyForecast = null;
+                if (response.Hourly is not null)
+                {
+                    var hourly = response.Hourly;
+
+                    int hourlyCount = new[]
+                    {
+                        hourly.Time.Count,
+                        hourly.Temperature_2m.Count,
+                        hourly.WeatherCode.Count,
+                        hourly.Precipitation.Count
+                    }.Min();
+
+                    hourlyForecast = new List<HourlyForecast>();
+
+                    DateTime currentHour = new DateTime(
+                        DateTime.Now.Year,
+                        DateTime.Now.Month,
+                        DateTime.Now.Day,
+                        DateTime.Now.Hour,
+                        0,
+                        0);
+
+                    for (int i = 0; i < hourlyCount && hourlyForecast.Count < 12; i++)
+                    {
+                        DateTime forecastTime = DateTime.Parse(hourly.Time[i]);
+
+                        if (forecastTime < currentHour)
+                            continue;
+
+                        int weatherCode = hourly.WeatherCode[i];
+
+                        hourlyForecast.Add(new HourlyForecast
+                        {
+                            Time = forecastTime,
+                            Temperature = hourly.Temperature_2m[i],
+                            WeatherCode = weatherCode,
+                            Precipitation = hourly.Precipitation[i]
+                        });
+                    }
+                }
+
+                return (current, forecast, hourlyForecast);
             }
             catch (HttpRequestException ex)
             {

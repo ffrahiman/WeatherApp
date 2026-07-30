@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:WeatherApp.Views"
         xmlns:models="clr-namespace:WeatherApp.Models"
-        Title="WeatherApp" Height="650" Width="900" MinWidth="700" MinHeight="500"
+        Title="WeatherApp" Height="760" Width="980" MinWidth="700" MinHeight="500"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <LinearGradientBrush x:Key="ClearDayBackground" StartPoint="0,0" EndPoint="0,1">
@@ -155,18 +155,26 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <views:CurrentWeatherView Grid.Row="0"
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
-                                      Margin="40,36,40,20" />
+                                      Margin="40,20,40,12" />
 
             <views:RecommendationView Grid.Row="1"
-                                      Margin="0,0,0,12" />
+                                      Margin="0,0,0,10" />
 
-            <views:ForecastView Grid.Row="2"
-                                MaxHeight="190" />
+            <views:HourlyForecastView Grid.Row="2"
+                                      Margin="0,0,0,10" />
+
+            <views:ForecastView Grid.Row="3"
+                                MaxHeight="150"
+                                Margin="0,0,0,10"/>
+
+            <views:WeatherDetailsView Grid.Row="4" />
             
         </Grid>
         <Button Panel.ZIndex="1"

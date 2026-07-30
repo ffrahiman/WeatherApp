@@ -62,7 +62,7 @@
                     TextElement.Foreground="{StaticResource SecondaryWeatherTextBrush}">
             <TextBlock>
                 <Run Text="H: " />
-                <Run Text="{Binding Forecast[0].TempMax, StringFormat={}{0:0}}" />
+                <Run Text="{Binding TodayForecast.TempMax, StringFormat={}{0:0}}" />
                 <Run Text="°" />
             </TextBlock>
 
@@ -70,16 +70,8 @@
 
             <TextBlock>
                 <Run Text="L: " />
-                <Run Text="{Binding Forecast[0].TempMin, StringFormat={}{0:0}}" />
+                <Run Text="{Binding TodayForecast.TempMin, StringFormat={}{0:0}}" />
                 <Run Text="°" />
-            </TextBlock>
-
-            <TextBlock Text="  •  " />
-
-            <TextBlock>
-                <Run Text="Wind: " />
-                <Run Text="{Binding CurrentWeather.WindSpeed, StringFormat={}{0:0}}" />
-                <Run Text=" km/h" />
             </TextBlock>
         </StackPanel>
     </Grid>

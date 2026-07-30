@@ -33,6 +33,14 @@ namespace WeatherApp.ViewModels
         [ObservableProperty]
         private CurrentWeather? _currentWeather;
 
+        /// <summary> Today's forecast, used for high/low and detail boxes. </summary>
+        [ObservableProperty]
+        private DailyForecast? _todayForecast;
+
+        /// <summary> Hourly forecast for the next 12 hours. </summary>
+        [ObservableProperty]
+        private List<HourlyForecast> _hourlyForecast = new();
+
         /// <summary> Weather Forecast for selected City. </summary>
         [ObservableProperty]
         private List<DailyForecast> _forecast = new();
@@ -170,7 +178,7 @@ namespace WeatherApp.ViewModels
 
             try
             {
-                var (current, forecast) = await _weatherService.GetForecastAsync(
+                var (current, forecast, hourly) = await _weatherService.GetForecastAsync(
                     city.Latitude,
                     city.Longitude,
                     Settings.TemperatureUnit
@@ -178,6 +186,8 @@ namespace WeatherApp.ViewModels
 
                 CurrentWeather = current;
                 Forecast = forecast ?? new List<DailyForecast>();
+                TodayForecast = Forecast.FirstOrDefault();
+                HourlyForecast = hourly ?? new List<HourlyForecast>();
 
                 if (current is not null)
                 {
