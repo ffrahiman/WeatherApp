@@ -1,6 +1,6 @@
 ﻿using System.Windows;
+using Microsoft.EntityFrameworkCore;
 using WeatherApp.Services;
-using WeatherApp.Models;
 using WeatherApp.ViewModels;
 
 namespace WeatherApp
@@ -13,7 +13,7 @@ namespace WeatherApp
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
             using var db = new AppDbContext();
-            await db.Database.EnsureCreatedAsync();
+            await db.Database.MigrateAsync();
 
             IWeatherService weatherService = new WeatherService();
             IDatabaseService databaseService = new DatabaseService();
