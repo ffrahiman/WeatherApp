@@ -1,0 +1,278 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{charter}
+\usepackage[ngerman]{babel}
+\usepackage[margin=1.6cm]{geometry}
+
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[document]{ragged2e}
+\usepackage[shortcuts]{extdash}
+\usepackage{booktabs}
+
+\hyphenpenalty=10000
+\exhyphenpenalty=0
+\emergencystretch=2em
+
+\pagestyle{empty}
+
+\setlist[itemize]{
+  noitemsep,
+  topsep=5pt,
+  leftmargin=2em,
+}
+
+\setlist[description]{
+  leftmargin=!,
+  labelwidth=1.5cm,
+  style=nextline
+}
+
+\titleformat{\section}{\fontsize{18}{22}\bfseries}{}{0em}{}[{\titlerule[1.5pt]}]
+\titlespacing*{\section}{0pt}{18pt}{10pt}
+
+\begin{document}
+
+\noindent
+{\fontsize{24}{28}\selectfont\bfseries Studienarbeit} \\
+\begin{minipage}[t]{0.5\textwidth}
+  \vspace{8pt}
+  {\itshape \textbf{Fach:} .NET-Programmierung mit C\# 2026} \\
+  {\itshape \textbf{Thema:} WeatherApp} \\
+  {\itshape \textbf{Name:} Fadhil Fasalu Rahiman}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+  \flushright
+  \vspace{8pt}
+  \itshape \textbf{Studiengang:} Computer Science \\
+  \itshape \textbf{Datum:} \today
+\end{minipage}
+
+\section{Benutzerhandbuch}
+
+\subsection{Beschreibung aller Funktionen}
+WeatherApp ist eine Desktopanwendung zur schnellen Anzeige von
+Wetterinformationen für frei suchbare Städte. Die Anwendung bietet
+folgende Hauptfunktionen:
+
+\begin{itemize}
+  \item \textbf{Städtsuche:} Ermöglicht die Suche nach beliebigen
+    Städten und lädt anschließend die zugehörigen Wetterdaten.
+  \item \textbf{Aktuelle Wetteranzeige:} Zeigt die aktuelle
+    Temperatur, den Wetterzustand sowie die Tageshöchst- und
+    Tagestiefsttemperatur der ausgewählten Stadt an.
+  \item \textbf{12-Stunden-Vorhersage:} Zeigt die Wetterentwicklung
+    und Temperaturen für die kommenden zwölf Stunden ab der aktuellen
+    Stunde.
+  \item \textbf{7-Tage-Vorhersage:} Gibt einen Überblick über die
+    Wetterbedingungen sowie die Höchst- und Tiefsttemperaturen der
+    nächsten sieben Tage.
+  \item \textbf{Favoriten:} Häufig verwendete Städte können
+    gespeichert und anschließend schnell über die Favoritenliste
+    aufgerufen werden.
+  \item \textbf{Wetterempfehlungen:} Gibt abhängig von den aktuellen
+    Wetterbedingungen praktische Hinweise, beispielsweise zu Regen,
+    Kälte, Hitze oder starkem Wind.
+  \item \textbf{Einstellungen:} Ermöglicht die Auswahl der
+    Temperatureinheit (Celsius/Fahrenheit) und das Festlegen einer
+    Standardstadt.
+\end{itemize}
+
+\subsection{Anleitung für unbedarfte Benutzer}
+\begin{enumerate}
+  \item \textbf{Start und Stadtsuche}
+    \begin{itemize}
+      \item Anwendung starten: Beim Start wird automatisch
+        die gespeicherte Standardstadt geladen.
+      \item Seitenleiste öffnen: Über das Menüsymbol kann
+        die Seitenleiste geöffnet werden.
+      \item Stadt suchen: Den Namen der gewünschten Stadt in
+        das Suchfeld eingeben und auf "`Search"' klicken.
+      \item Stadt auswählen: Eine Stadt aus der Ergebnisliste
+        auswählen.
+      \item Wetterdaten laden: Nach der Auswahl werden die
+        Wetterdaten der Stadt im Hauptfenster angezeigt.
+    \end{itemize}
+  \item \textbf{Wetteranzeige}
+    \begin{itemize}
+      \item Oben werden der Stadtname, die aktuelle Temperatur und der
+        aktuelle Wetterzustand angezeigt.
+      \item Darunter befinden sich die Tageshöchst- und
+        Tagestiefsttemperatur.
+      \item Eine Wetterempfehlung gibt praktische Hinweise für den
+        Alltag, beispielsweise zur Mitnahme eines Regenschirms oder
+        zum Tragen warmer Kleidung.
+      \item Die 12-Stunden-Vorhersage zeigt die Wetterentwicklung der
+        kommenden Stunden ab der aktuellen Stunde.
+      \item Die 7-Tage-Vorhersage gibt einen Überblick über die
+        kommenden Tage mit Temperaturwerten und Wettersymbolen.
+      \item Zusätzliche Detailkarten informieren über
+        Windgeschwindigkeit und Niederschlag.
+    \end{itemize}
+  \item \textbf{Favoriten und Einstellungen}
+    \begin{itemize}
+      \item Über den ungefüllten Stern kann die aktuell ausgewählte
+        Stadt zu den Favoriten hinzugefügt werden.
+      \item Ein gefüllter Stern zeigt an, dass die Stadt bereits als
+        Favorit gespeichert ist. Durch erneutes Anklicken wird sie aus
+        den Favoriten entfernt.
+      \item Gespeicherte Favoriten können über die Seitenleiste
+        ausgewählt oder entfernt werden.
+      \item In den Einstellungen kann zwischen Celsius und Fahrenheit
+        als Temperatureinheit gewechselt werden.
+      \item Die aktuell ausgewählte Stadt kann als Standardstadt
+        gespeichert werden.
+    \end{itemize}
+  \item \textbf{Fehlerbehandlung}
+    \begin{itemize}
+      \item Bei API- oder Netzwerkfehlern wird eine verständliche
+        Statusmeldung in der Anwendung angezeigt.
+      \item Bei kritischen Fehlern während des Starts, beispielsweise
+        bei Problemen mit der Datenbankinitialisierung oder
+        -migration, erscheint ein entsprechendes Dialogfenster.
+    \end{itemize}
+\end{enumerate}
+
+\section{Beschreibung der Anwendungsidee}
+WeatherApp ist eine WPF-Desktopanwendung, die eine schnelle und
+übersichtliche Darstellung von Wetterinformationen für frei wählbare
+Städte ermöglicht. Neben aktuellen Wetterdaten und Vorhersagen bietet
+die Anwendung praktische Wetterempfehlungen und ermöglicht es, häufig
+verwendete Städte als Favoriten zu speichern. Ziel ist es, wichtige
+Informationen für die tägliche Planung verständlich und ohne unnötige
+Komplexität bereitzustellen.
+
+\subsection{Zielgruppe}
+Die Anwendung richtet sich an Personen, die regelmäßig die
+Wetterbedingungen für ihre täglichen Aktivitäten, den Arbeitsweg oder
+die Reiseplanung überprüfen möchten. Dazu gehören insbesondere
+\textbf{Studierende, Pendler und Reisende}, die schnell und unkompliziert
+Informationen über das Wetter an verschiedenen Orten benötigen.
+
+\subsection{Most Valuable Features (MVF)}
+\begin{itemize}
+  \item \textbf{Aktuelles Wetter und Vorhersagen:} Zeigt die aktuellen
+    Wetterbedingungen sowie eine 12-Stunden- und 7-Tage-Vorhersage für
+    die ausgewählte Stadt an.
+  \item \textbf{Städtesuche und Favoriten:} Ermöglicht die Suche nach
+    Städten und das Speichern häufig verwendeter Orte für einen
+    schnellen Zugriff.
+  \item \textbf{Wetterempfehlungen:} Gibt auf Grundlage der aktuellen
+    Wetterbedingungen praktische Hinweise, beispielsweise zur Mitnahme
+    eines Regenschirms oder zum Tragen geeigneter Kleidung.
+  \item \textbf{Temperatureinstellungen und Standardstadt:} Ermöglicht
+    die Auswahl zwischen Celsius und Fahrenheit sowie das Festlegen
+    einer bevorzugten Standardstadt.
+\end{itemize}
+
+\newpage
+\section{Code-Statistik (Lines of Code)}
+Die Ermittlung des Quellcode-Umfangs erfolgte strikt nach Vorgabe
+über das Tool \texttt{cloc} für das Projekt
+\texttt{WeatherApp} unter Ausschluss von Kompilierordnern (\texttt{bin},
+\texttt{obj}), externen Bibliotheken und Test-Dateien.
+
+Der Richtwert von mindestens 1500 Lines of Code (C\# + XAML) wird mit
+insgesamt \textbf{2.064 Zeilen Code und Markup} deutlich erfüllt.
+
+\vspace{0.8em}
+\noindent
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{4cm}|r|r|r|r|}
+  \hline
+  \textbf{Sprache} & \textbf{Dateien} & \textbf{Leerzeilen} &
+  \textbf{Kommentarzeilen} & \textbf{Codezeilen (LOC)} \\
+  \hline
+  XAML & 9 & 95 & 17 & 735 \\
+  \hline
+  C\# & 34 & 271 & 142 & 1.329 \\
+  \hline
+  \textbf{Gesamt (SUM)} & \textbf{43} & \textbf{366} & \textbf{159} &
+  \textbf{2.064} \\
+  \hline
+\end{tabular}
+
+\section{Verwendeter Fremdcode und externe Tools}
+Das Projekt wurde als Windows Presentation Foundation (WPF)
+Desktop-Anwendung in C\# unter .NET 10.0 entwickelt. Es nutzt die
+folgenden externen NuGet-Pakete und Architektur-Tools:
+
+\vspace{1em}
+\noindent
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{4.5cm}|p{11.5cm}|}
+  \hline
+  \textbf{Paket / Tool} & \textbf{Zweck} \\
+  \hline
+  CommunityToolkit.\newline Mvvm & Unterstützt die Umsetzung des MVVM-Patterns,
+  unter anderem durch ObservableObject, ObservableProperty und
+  RelayCommand. \\
+  \hline
+  Entity Framework Core & ORM für den Zugriff auf die lokale
+  SQLite-Datenbank und die Verwaltung von Datenbankmigrationen. \\
+  \hline
+  Microsoft.Data.Sqlite /\newline SQLitePCLRaw & Ermöglicht die Anbindung und
+  Verwendung der SQLite-Datenbank. \\
+  \hline
+  Microsoft.Extensions.\newline DependencyInjection & Wird für Dependency
+  Injection verwendet und ermöglicht die Verwaltung und Bereitstellung
+  der Services und ViewModels. \\
+  \hline
+  Open-Meteo Forecast API & Liefert die Wetterdaten für die aktuelle
+  Wetterlage sowie die Stunden- und Tagesvorhersagen. \\
+  \hline
+  Open-Meteo Geocoding API & Ermöglicht die Suche nach Städten und die
+  Auflösung der entsprechenden Koordinaten. \\
+  \hline
+  xUnit & Framework für die Erstellung und Ausführung der
+  automatisierten Unit-Tests. \\
+  \hline
+  Visual Studio / NuGet & Visual Studio dient als Entwicklungsumgebung;
+  NuGet wird zur Verwaltung der verwendeten Pakete und Abhängigkeiten
+  eingesetzt. \\
+  \hline
+  Git & Versionsverwaltung zur Nachverfolgung von Änderungen am
+  Projekt. \\
+  \hline
+\end{tabular}
+
+\newpage
+\section{Einsatz von KI-Tools}
+Im Rahmen dieser Studienarbeit wurden die KI-Assistenten \textbf{Claude}
+und \textbf{Codex (ChatGPT)} unterstützend eingesetzt. Die KI wurde
+dabei \textbf{nicht zur vollständigen Generierung der Anwendung}
+verwendet, sondern gezielt zur Unterstützung bei einzelnen Teilaufgaben
+und zur Verbesserung des Entwicklungsprozesses.
+
+Die KI-Unterstützung umfasste insbesondere folgende Bereiche:
+
+\begin{itemize}
+  \item \textbf{Projektstruktur:} Unterstützung bei der Planung und
+    Strukturierung des Projekts.
+  \item \textbf{Debugging und Code Review:} Analyse von Fehlern sowie
+    Überprüfung und Verbesserungsvorschläge für bestehenden Code.
+  \item \textbf{XML-Dokumentation:} Unterstützung beim Erstellen und
+    Formulieren von
+    XML-Dokumentationskommentaren.
+  \item \textbf{XAML-Styling und UI-Design:} Unterstützung bei der
+    Gestaltung und Verbesserung der Benutzeroberfläche.
+  \item \textbf{Unit-Tests:} Unterstützung bei der Erstellung und
+    Erweiterung von Unit-Tests sowie bei der Identifikation geeigneter
+    Testfälle.
+  \item \textbf{Erklärungen und Refactoring:} Unterstützung beim
+    Verständnis von Konzepten und bei der Entwicklung von Ideen zur
+    Verbesserung und Umstrukturierung des Codes.
+  \item \textbf{Dokumentation:} Unterstützung bei der Strukturierung,
+    Formulierung und sprachlichen Überarbeitung der Projektdokumentation.
+\end{itemize}
+
+Sämtliche Vorschläge wurden kritisch geprüft, nachvollzogen und vor der
+Integration an die bestehende Softwarearchitektur angepasst. Die
+Implementierung und Überprüfung der Lösungen erfolgte eigenständig.
+KI-Tools dienten dabei ausschließlich als unterstützende Werkzeuge im
+Entwicklungsprozess.
+
+\end{document}
