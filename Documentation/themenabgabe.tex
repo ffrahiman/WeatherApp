@@ -1,0 +1,73 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{charter}
+\usepackage[ngerman]{babel}
+\usepackage[margin=1.6cm]{geometry}
+
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[document]{ragged2e}
+\usepackage[shortcuts]{extdash}
+
+\hyphenpenalty=10000
+\exhyphenpenalty=0
+\emergencystretch=2em
+
+\pagestyle{empty}
+
+\setlist[itemize]{
+  noitemsep,
+  topsep=5pt,
+  leftmargin=2em,
+}
+
+\setlist[description]{
+  leftmargin=!,
+  labelwidth=1.5cm,
+  style=nextline
+}
+
+\titleformat{\section}{\fontsize{18}{22}\bfseries}{}{0em}{}[{\titlerule[1.5pt]}]
+\titlespacing*{\section}{0pt}{18pt}{10pt}
+
+\begin{document}
+
+\noindent
+{\fontsize{24}{28}\selectfont\bfseries Studienarbeit - Abgabe Thema} \\
+\begin{minipage}[t]{0.5\textwidth}
+  \vspace{8pt}
+  {\itshape \textbf{Fach:} .Net-Programmierung mit C\# 2026} \\
+  {\itshape \textbf{Name:} Fadhil Fasalu Rahiman}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+  \flushright
+  \vspace{8pt}
+  \itshape \textbf{Studiengang:} Computer Science (CS7)\\
+  \itshape \textbf{Datum:} \today
+\end{minipage}
+
+\section{Problemstellung}
+Viele Wetter-Apps überhäufen die Nutzer mit unnötigen Informationen oder bieten lediglich einfache Vorhersagen ohne sinnvolle Empfehlungen. Oft benötigen Nutzer schnelle und verständliche Wetterinformationen für ihre tägliche Planung. Das Ziel der App ist es, eine moderne und benutzerfreundliche Desktop-Lösung anzubieten, die Wettervorhersagen mit praktischen Empfehlungen verbindet.
+
+\section{Zielgruppe}
+Nutzer, die regelmäßig die Wetterbedingungen für ihre täglichen Aktivitäten, den Arbeitsweg oder die Reiseplanung überprüfen. Zur Zielgruppe gehören vor allem Studenten, Pendler und Reisende.
+
+\section{Most Valuable Features (MVF)}
+\begin{description}
+  \item [Aktuelles Wetter \& Vorhersage] Zeigt die aktuellen Wetterbedingungen und eine Vorhersage für mehrere Tage für ausgewählte Städte an.
+  \item [Stadtsuche \& Favoriten] Ermöglicht es Benutzern, weltweit nach Städten zu suchen und häufig verwendete Orte für den schnellen Zugriff zu speichern.
+  \item [Intelligente Wetterempfehlungen] Gibt einfache Empfehlungen auf der Basis der Wetterbedingungen, wie zum Beispiel Tipps zu Regenschirmen oder Kleidung.
+  \item [Moderne UI] Bietet eine übersichtliche und adaptive WPF-Oberfläche mit benutzerfreundlichem Design.
+  \item [Persistente Benutzereinstellungen] Speichert Benutzereinstellungen wie Temperatureinheiten und Design-Einstellungen lokal.
+\end{description}
+
+\section{Geplante Datenquelle(n)}
+\begin{description}
+  \item [Open-Meteo APIs (Forecast \& Geocoding)] Dient dazu, aktuelle Wetterdaten, Mehrtagesvorhersagen und Standortinformationen für gesuchte Städte über externe Webservice-Anfragen abzurufen.
+  \item [SQLite-Datenbank] Dient dazu, benutzerspezifische Daten wie Favoritenorte, Anwendungseinstellungen und Benutzereinstellungen lokal auf dem System zu speichern.
+\end{description}
+
+\end{document}
